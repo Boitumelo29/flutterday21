@@ -1,17 +1,20 @@
-part of 'login_bloc.dart';
-
+// part of 'login_bloc.dart';
+import 'package:flutterday21/auth/form_submitted/form_submission_status.dart';
 // @immutable
 // abstract class LoginState {}
 
-class LoginState {
+
+
+class LoginState{
   final String username;
   final String password;
+  final FormSubmissionStatus formStatus;
 
-  LoginState({this.username = "", this.password = ""});
+  LoginState({this.formStatus = const InitialFormStatus(), this.username = "", this.password = ""});
 
-  LoginState copyWith({String? username, String? password}) {
+  LoginState copyWith({String? username, String? password, FormSubmissionStatus? formSubmissionStatus}) {
     return LoginState(
         username: username ?? this.username,
-        password: password ?? this.password);
+        password: password ?? this.password, formStatus: formStatus ?? formStatus);
   }
 }
