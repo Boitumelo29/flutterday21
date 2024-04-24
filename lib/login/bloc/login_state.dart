@@ -1,11 +1,17 @@
 part of 'login_bloc.dart';
 
 // @immutable
-abstract class LoginState {}
+// abstract class LoginState {}
 
-class LoginStateChanged {
-  String? username;
-  String? password;
+class LoginState {
+  final String username;
+  final String password;
 
-  LoginStateChanged({this.username = "", this.password = ""});
+  LoginState({this.username = "", this.password = ""});
+
+  LoginState copyWith({String? username, String? password}) {
+    return LoginState(
+        username: username ?? this.username,
+        password: password ?? this.password);
+  }
 }
