@@ -1,13 +1,26 @@
+import 'dart:js_interop';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutterday21/auth/form_submitted/auth_repo/auth_repo.dart';
+import 'package:flutterday21/auth/form_submitted/form_submission_status.dart';
+import 'package:flutterday21/login/bloc/login_bloc.dart';
+
+// import 'package:flutterday21/login/bloc/login_event.dart';
+import 'package:flutterday21/login/bloc/login_state.dart';
 
 class LoginScreen extends StatelessWidget {
   final formKey = GlobalKey<FormState>();
+
   LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-
-    return Scaffold(body: _loginForm());
+    return Scaffold(
+        body: BlocProvider(
+      create: (context) => LoginBloc(context.read()<AuthRepo>()),
+      child: _loginForm(),
+    ));
   }
 
   Widget _loginForm() {
@@ -24,20 +37,44 @@ class LoginScreen extends StatelessWidget {
   }
 
   Widget _passwordsField() {
-    return TextFormField(
-      obscureText: true,
-      validator: (value) => null,
+    return BlocBuilder<LoginBloc, LoginState>(
+      builder: (context, state) {
+        return TextFormField(
+          onChanged: (value) => context
+              .read()<LoginBloc>()
+              .add(LoginPasswordChanged(password: value)),
+          obscureText: true,
+          validator: (value) => null,
+        );
+      },
     );
   }
 
   Widget _usernameField() {
-    return TextFormField(
-      obscureText: false,
-      validator: (value) => null,
+    return BlocBuilder<LoginBloc, LoginState>(
+      builder: (context, state) {
+        return TextFormField(
+          onChanged: (value) => context
+              .read()<LoginBloc>()
+              .add(LoginUsernameChanged(username: value)),
+          obscureText: false,
+          validator: (value) => null,
+        );
+      },
     );
   }
 
   Widget loginButton() {
-    return ElevatedButton(onPressed: () {}, child: const Text("Login"));
+    return BlocBuilder<LoginBloc, LoginState>(
+      builder: (context, state) {
+        return state.formStatus is FormSubmmiting
+            ? CircularProgressIndicator()
+            : ElevatedButton(
+                onPressed: () {
+                  context.read<LoginBloc>().add(LoginSubmitted());
+                },
+                child: const Text("Login"));
+      },
+    );
   }
 }

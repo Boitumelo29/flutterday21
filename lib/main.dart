@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutterday21/auth/form_submitted/auth_repo/auth_repo.dart';
+import 'package:flutterday21/login/bloc/login_bloc.dart';
 import 'package:flutterday21/login/login_screen.dart';
 
 void main() {
@@ -12,7 +15,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: LoginScreen(),
+      home: RepositoryProvider(
+        create: (context) => AuthRepo(),
+        child: LoginScreen(),
+      ),
     );
   }
 }
