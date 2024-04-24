@@ -1,6 +1,11 @@
 part of 'login_bloc.dart';
 
-@immutable
+// @immutable
 abstract class LoginState {}
 
-class LoginInitial extends LoginState {}
+class LoginStateChanged {
+  String? username;
+  String? password;
+
+  LoginStateChanged({this.username = "", this.password = ""});
+}
